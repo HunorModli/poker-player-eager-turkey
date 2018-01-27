@@ -109,24 +109,27 @@ class Player
 
             foreach ($pairsToHold as $item) {
 
-                $tuple = explode('-', $item);
+                $tuple = explode('-', $item); // [A,9,O]
 
-                if (($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
-                    ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) {
+                $suited = $card1->getSuit() == $card2->getSuit() ? 'S' : 'O';
+
+                if ((($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
+                    ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) && $suited == $tuple[2]) {
 
                     if ($active == 2) {
                         $this->log("ACTIVE = 2");
                         return 10000;
                     }
-
+    
                     if ($active > 2 && $tuple[0] == $tuple[1]) {
                         $this->log("ACTIVE > 2 & PAIR");
                         return 10000;
                     }
-                    // ha 2 aktív vagy keveseb all in
-                    //
-                    // ha még 2-nél több aktív van, akkor lal in ha pár, fold else
 
+                    if ($game_state['pot'] < 100) {
+                        $this->log("POT < 100");
+                        return 100;
+                    }
                 }
 
             }
@@ -137,11 +140,8 @@ class Player
 //                $this->log("BUY IN > 300");
 //                return 0;
 //            }
-//
-//            if ($game_state['pot'] < 100) {
-//                $this->log("POT < 100");
-//                return 100;
-//            }
+
+
 //            $this->log("Return 10000");
 //            return 100000;
         } catch (\Exception $e) {
