@@ -113,10 +113,10 @@ class Player
 
 //            if ($out >= 2) {
 
-            if ($self['stack'] > 2000) {
+            if ($self['stack'] >= 2000) {
                 return 10000;
             }
-            
+
             foreach ($pairsToHold as $item) {
 
                 $tuple = explode('-', $item); // [A,9,O]
