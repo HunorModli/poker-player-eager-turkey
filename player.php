@@ -1,5 +1,54 @@
 <?php
 
+class Card
+{
+    const SUIT_SPADES = 'spades';
+    const SUIT_HEARTS = "hearts";
+    const SUIT_CLUBS = "clubs";
+    const SUIT_DIAMONDS = "diamonds";
+
+    public $rank;
+    public $suit;
+
+    public function __construct($rank, $suit)
+    {
+        $this->rank = $rank;
+        $this->suit = $suit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRank()
+    {
+        return $this->rank;
+    }
+
+    /**
+     * @param mixed $rank
+     */
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSuit()
+    {
+        return $this->suit;
+    }
+
+    /**
+     * @param mixed $suit
+     */
+    public function setSuit($suit)
+    {
+        $this->suit = $suit;
+    }
+}
+
 class Player
 {
     const VERSION = "Default PHP folding player";
@@ -21,8 +70,8 @@ class Player
                 }
             }
 
-            $card1 = new Card($self['hole_cards']['0']['rank'],$self['hole_cards']['0']['suite']);
-            $card2 = new Card($self['hole_cards']['1']['rank'],$self['hole_cards']['1']['suite']);
+            $card1 = new Card($self['hole_cards']['0']['rank'],$self['hole_cards']['0']['suit']);
+            $card2 = new Card($self['hole_cards']['1']['rank'],$self['hole_cards']['1']['suit']);
 
             foreach ($pairsToFold as $item) {
                 $tmp = explode('-',$item);
@@ -32,7 +81,7 @@ class Player
                 }
             }
 
-            return 100000;
+            return 100000;  
         } catch (\Exception $e) {
 
             return 100000;
