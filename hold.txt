@@ -1,1 +1,1 @@
-A-A-O|K-K-O|Q-Q-O|J-J-O|10-10-O|9-9-O|8-8-O|A-K-S|7-7-S|A-Q-S
+A-A-O|K-K-O|Q-Q-O|J-J-O|10-10-O|9-9-O|8-8-O|A-K-S|7-7-S|A-Q-S|A-J-S|A-K-O|A-10-S|A-Q-O|A-J-O|K-Q-S|6-6-O|A-9-S|A-10-O|K-J-S|A-8-S|K-10-S|K-Q-O|A-7-S|A-9-O|K-J-O|5-5-O|Q-J-S|K-9-S|A-5-S|A-6-S|A-8-O|K-10-O|Q-10-S|A-4-S|A-7-O|K-8-S|A-3-S
