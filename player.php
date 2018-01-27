@@ -53,11 +53,8 @@ class Player
 {
     const VERSION = "Default PHP folding player";
 
-    private $gameState;
-
     public function betRequest($game_state)
     {
-        $this->gameState = $game_state;
         try {
             $filePairs = file_get_contents('fold.txt');
 
@@ -71,6 +68,11 @@ class Player
                 if (array_key_exists('hole_cards', $player)) {
                     $self = $player;
                 }
+//                else {
+//                    if ($player['status'] == 'active') {
+//
+//                    }
+//                }
             }
 
             $card1 = new Card($self['hole_cards']['0']['rank'],$self['hole_cards']['0']['suit']);
@@ -80,10 +82,16 @@ class Player
                 $tmp = explode('-',$item);
                 if (($card1->getRank() == $tmp[0] && $card2->getRank() == $tmp[1]) ||
                     ($card1->getRank() == $tmp[1] && $card2->getRank() == $tmp[0])) {
-                    $this->log("FOLD 0");
+                    $this->log("FOLD BY HAND");
                     return 0;
                 }
             }
+
+            if ($game_state['current_buy_in'] >= 300 && $card1->getRank() != $card2->getRank()) {
+                $this->log("BUY IN > 300");
+                return 0;
+            }
+
             $this->log("Return 10000");
             return 100000;  
         } catch (\Exception $e) {
