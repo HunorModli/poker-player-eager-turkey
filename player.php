@@ -6,7 +6,7 @@ class Player
 
     public function betRequest($game_state)
     {
-        $filePairs = file_get_contents('../fold.txt');
+        $filePairs = file_get_contents('fold.txt');
 
         $pairsToFold = explode('|', $filePairs);
 
