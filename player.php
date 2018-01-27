@@ -7,9 +7,12 @@ class Player
     public function betRequest($game_state)
     {
 //        $game_state
-        
 
-        return 10;
+        $string = file_get_contents("player-api.json");
+        $json_a = json_decode($string, true);
+
+
+        return 10000;
     }
 
     public function showdown($game_state)
