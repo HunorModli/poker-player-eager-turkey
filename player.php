@@ -6,10 +6,14 @@ class Player
 
     public function betRequest($game_state)
     {
-        return 100;
+//        $game_state
+        
+
+        return 10;
     }
 
     public function showdown($game_state)
     {
+
     }
 }
