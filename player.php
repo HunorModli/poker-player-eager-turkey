@@ -62,7 +62,7 @@ class Card
 
 class Player
 {
-    const VERSION = "Default PHP folding player";
+    const VERSION = "¯\_(ツ)_/¯";
 
     public function betRequest($game_state)
     {
@@ -120,7 +120,7 @@ class Player
                         $this->log("ACTIVE = 2");
                         return 10000;
                     }
-    
+
                     if ($active > 2 && $tuple[0] == $tuple[1]) {
                         $this->log("ACTIVE > 2 & PAIR");
                         return 10000;
