@@ -62,7 +62,7 @@ class Card
 
 class Player
 {
-    const VERSION = "Hupsz  ";
+    const VERSION = "Hupsz";
 
     public function betRequest($game_state)
     {
@@ -111,7 +111,7 @@ class Player
 //                }
 //            }
 
-            if ($out >= 2) {
+//            if ($out >= 2) {
 
                 foreach ($pairsToHold as $item) {
 
@@ -138,7 +138,7 @@ class Player
                         }
                     }
                 }
-            }
+//            }
 
             $this->log("RETURN FOLD");
 
