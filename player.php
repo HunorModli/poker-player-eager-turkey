@@ -111,7 +111,7 @@ class Player
 //                }
 //            }
 
-            if ($out >= 2 || $self['stack'] < 300) {
+            if ($out >= 2 || $self['stack'] < 500) {
 
 //            if ($self['stack'] >= 2000) {
 //                return 10000;
