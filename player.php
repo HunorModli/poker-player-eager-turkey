@@ -12,7 +12,7 @@ class Player
         $json_a = json_decode($string, true);
 
 
-        return 10000;
+        return 1000000;
     }
 
     public function showdown($game_state)
