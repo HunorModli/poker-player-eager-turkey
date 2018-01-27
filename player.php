@@ -62,7 +62,7 @@ class Card
 
 class Player
 {
-    const VERSION = "¯\_(ツ)_/¯";
+    const VERSION = "Hupsz  ";
 
     public function betRequest($game_state)
     {
