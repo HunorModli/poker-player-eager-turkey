@@ -78,6 +78,7 @@ class Player
             $self = null;
 
             $active = 0;
+            $out = 0;
 
             foreach ($game_state['players'] as $player) {
                 if (array_key_exists('hole_cards', $player)) {
@@ -86,6 +87,10 @@ class Player
 
                 if ($player['status'] == 'active') {
                     $active++;
+                }
+
+                if ($player['status'] == 'out') {
+                    $out++;
                 }
 //                else {
 //                    if ($player['status'] == 'active') {
@@ -106,44 +111,38 @@ class Player
 //                }
 //            }
 
+            if ($out >= 2) {
 
-            foreach ($pairsToHold as $item) {
+                foreach ($pairsToHold as $item) {
 
-                $tuple = explode('-', $item); // [A,9,O]
+                    $tuple = explode('-', $item); // [A,9,O]
 
-                $suited = $card1->getSuit() == $card2->getSuit() ? 'S' : 'O';
+                    $suited = $card1->getSuit() == $card2->getSuit() ? 'S' : 'O';
 
-                if ((($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
-                    ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) && $suited == $tuple[2]) {
+                    if ((($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
+                            ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) && $suited == $tuple[2]) {
 
-                    if ($active == 2) {
-                        $this->log("ACTIVE = 2");
-                        return 10000;
-                    }
+                        if ($active == 2) {
+                            $this->log("ACTIVE = 2");
+                            return 10000;
+                        }
 
-                    if ($active > 2 && $tuple[0] == $tuple[1]) {
-                        $this->log("ACTIVE > 2 & PAIR");
-                        return 10000;
-                    }
+                        if ($active > 2 && $tuple[0] == $tuple[1]) {
+                            $this->log("ACTIVE > 2 & PAIR");
+                            return 10000;
+                        }
 
-                    if ($game_state['pot'] < 100) {
-                        $this->log("POT < 100");
-                        return 100;
+                        if ($game_state['pot'] < 100) {
+                            $this->log("POT < 100");
+                            return 100;
+                        }
                     }
                 }
-
             }
+
             $this->log("RETURN FOLD");
+
             return 0;
-
-//            if ($game_state['current_buy_in'] >= 300 && $card1->getRank() != $card2->getRank()) {
-//                $this->log("BUY IN > 300");
-//                return 0;
-//            }
-
-
-//            $this->log("Return 10000");
-//            return 100000;
         } catch (\Exception $e) {
             $this->log("EXCEPTION: " . $e->getMessage());
             return 100000;
