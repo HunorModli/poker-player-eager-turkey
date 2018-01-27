@@ -126,11 +126,11 @@ class Player
                 if ((($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
                         ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) && $suited == $tuple[2]) {
 
-                    if ($game_state['pot'] > 100) {
+                    if ($game_state['pot'] >= 3 * $game_state['small_blind']) {
                         return 10000;
                     } else {
 
-                        if ($game_state['pot'] < 100) {
+                        if ($game_state['pot'] <= 3 * $game_state['small_blind']) {
                             $this->log("POT < 100");
                             return $game_state['minimum_raise'] + 2;
                         }
@@ -143,7 +143,7 @@ class Player
             }
 //            }
 
-            if ($game_state['pot'] < 100) {
+            if ($game_state['pot'] <= 3 * $game_state['small_blind']) {
                 $this->log("POT < 100");
                 return $game_state['minimum_raise'] + 2;
             }
