@@ -12,17 +12,18 @@ class Card
 
     public function __construct($rank, $suit)
     {
-        if (intval($rank) <= 10) {
-            $this->rank = intval($rank);
-        } else if ($rank = 'J') {
-            $this->rank = 11;
-        } else if ($rank = 'Q') {
-            $this->rank = 12;
-        } else if ($rank = 'K') {
-            $this->rank = 13;
-        } else if ($rank = 'A') {
-            $this->rank = 14;
-        }
+//        if (intval($rank) <= 10) {
+//            $this->rank = intval($rank);
+//        } else if ($rank = 'J') {
+//            $this->rank = 11;
+//        } else if ($rank = 'Q') {
+//            $this->rank = 12;
+//        } else if ($rank = 'K') {
+//            $this->rank = 13;
+//        } else if ($rank = 'A') {
+//            $this->rank = 14;
+//        }
+        $this->rank = $rank;
         $this->suit = $suit;
     }
 
@@ -65,29 +66,37 @@ class Player
 
     public function betRequest($game_state)
     {
-//        try {
-//            $filePairs = file_get_contents('fold.txt');
+        try {
+            $filePairs = file_get_contents('fold.txt');
+            $pairsToFold = explode('|', $filePairs);
+
+            $fileHold = file_get_contents('hold.txt');
+            $pairsToHold = explode('|', $fileHold);
+
+            $round = $game_state['round'];
+
+            $self = null;
+
+            $active = 0;
+
+            foreach ($game_state['players'] as $player) {
+                if (array_key_exists('hole_cards', $player)) {
+                    $self = $player;
+                }
+
+                if ($player['status'] == 'active') {
+                    $active++;
+                }
+//                else {
+//                    if ($player['status'] == 'active') {
 //
-//            $pairsToFold = explode('|', $filePairs);
-//
-//            $round = $game_state['round'];
-//
-//            $self = null;
-//
-//            foreach ($game_state['players'] as $player) {
-//                if (array_key_exists('hole_cards', $player)) {
-//                    $self = $player;
+//                    }
 //                }
-////                else {
-////                    if ($player['status'] == 'active') {
-////
-////                    }
-////                }
-//            }
-//
-//            $card1 = new Card($self['hole_cards']['0']['rank'],$self['hole_cards']['0']['suit']);
-//            $card2 = new Card($self['hole_cards']['1']['rank'],$self['hole_cards']['1']['suit']);
-//
+            }
+
+            $card1 = new Card($self['hole_cards']['0']['rank'],$self['hole_cards']['0']['suit']);
+            $card2 = new Card($self['hole_cards']['1']['rank'],$self['hole_cards']['1']['suit']);
+
 //            foreach ($pairsToFold as $item) {
 //                $tmp = explode('-',$item);
 //                if (($card1->getRank() == $tmp[0] && $card2->getRank() == $tmp[1]) ||
@@ -96,7 +105,34 @@ class Player
 //                    return 0;
 //                }
 //            }
-//
+
+
+            foreach ($pairsToHold as $item) {
+
+                $tuple = explode('-', $item);
+
+                if (($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
+                    ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) {
+
+                    if ($active == 2) {
+                        $this->log("ACTIVE = 2");
+                        return 10000;
+                    }
+
+                    if ($active > 2 && $tuple[0] == $tuple[1]) {
+                        $this->log("ACTIVE > 2 & PAIR");
+                        return 10000;
+                    }
+                    // ha 2 aktív vagy keveseb all in
+                    //
+                    // ha még 2-nél több aktív van, akkor lal in ha pár, fold else
+
+                }
+
+            }
+            $this->log("RETURN FOLD");
+            return 0;
+
 //            if ($game_state['current_buy_in'] >= 300 && $card1->getRank() != $card2->getRank()) {
 //                $this->log("BUY IN > 300");
 //                return 0;
@@ -108,17 +144,17 @@ class Player
 //            }
 //            $this->log("Return 10000");
 //            return 100000;
-//        } catch (\Exception $e) {
-//            $this->log("EXCEPTION: " . $e->getMessage());
-//            return 100000;
-//        }
-
-        $rnd = rand(0,100);
-        if ($rnd < 30) {
-            return 0;
-        } else {
-            return 10000;
+        } catch (\Exception $e) {
+            $this->log("EXCEPTION: " . $e->getMessage());
+            return 100000;
         }
+
+//        $rnd = rand(0,100);
+//        if ($rnd < 30) {
+//            return 0;
+//        } else {
+//            return 10000;
+//        }
     }
 
     public function showdown($game_state)
