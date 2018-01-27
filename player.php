@@ -66,6 +66,7 @@ class Player
 
     public function betRequest($game_state)
     {
+
         try {
             $filePairs = file_get_contents('fold.txt');
             $pairsToFold = explode('|', $filePairs);
@@ -117,6 +118,13 @@ class Player
 //                return 10000;
 //            }
 
+
+            if ($self['stack'] < 200) {
+                return 10000;
+            } else {
+                return 0;
+            }
+            
             foreach ($pairsToHold as $item) {
 
                 $tuple = explode('-', $item); // [A,9,O]
