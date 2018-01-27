@@ -66,97 +66,96 @@ class Player
 
     public function betRequest($game_state)
     {
-        return 10000;
-//        try {
-//            $filePairs = file_get_contents('fold.txt');
-//            $pairsToFold = explode('|', $filePairs);
+        try {
+            $filePairs = file_get_contents('fold.txt');
+            $pairsToFold = explode('|', $filePairs);
+
+            $fileHold = file_get_contents('hold.txt');
+            $pairsToHold = explode('|', $fileHold);
+
+            $round = $game_state['round'];
+
+            $self = null;
+
+            $active = 0;
+            $out = 0;
+
+            foreach ($game_state['players'] as $player) {
+                if (array_key_exists('hole_cards', $player)) {
+                    $self = $player;
+                }
+
+                if ($player['status'] == 'active') {
+                    $active++;
+                }
+
+                if ($player['status'] == 'out') {
+                    $out++;
+                }
+//                else {
+//                    if ($player['status'] == 'active') {
 //
-//            $fileHold = file_get_contents('hold.txt');
-//            $pairsToHold = explode('|', $fileHold);
-//
-//            $round = $game_state['round'];
-//
-//            $self = null;
-//
-//            $active = 0;
-//            $out = 0;
-//
-//            foreach ($game_state['players'] as $player) {
-//                if (array_key_exists('hole_cards', $player)) {
-//                    $self = $player;
-//                }
-//
-//                if ($player['status'] == 'active') {
-//                    $active++;
-//                }
-//
-//                if ($player['status'] == 'out') {
-//                    $out++;
-//                }
-////                else {
-////                    if ($player['status'] == 'active') {
-////
-////                    }
-////                }
-//            }
-//
-//            $card1 = new Card($self['hole_cards']['0']['rank'],$self['hole_cards']['0']['suit']);
-//            $card2 = new Card($self['hole_cards']['1']['rank'],$self['hole_cards']['1']['suit']);
-//
-////            foreach ($pairsToFold as $item) {
-////                $tmp = explode('-',$item);
-////                if (($card1->getRank() == $tmp[0] && $card2->getRank() == $tmp[1]) ||
-////                    ($card1->getRank() == $tmp[1] && $card2->getRank() == $tmp[0])) {
-////                    $this->log("FOLD BY HAND");
-////                    return 0;
-////                }
-////            }
-//
-////            if ($out >= 2 || $self['stack'] < 500) {
-//
-////            if ($self['stack'] >= 2000) {
-////                return 10000;
-////            }
-//
-//            foreach ($pairsToHold as $item) {
-//
-//                $tuple = explode('-', $item); // [A,9,O]
-//
-//                $suited = $card1->getSuit() == $card2->getSuit() ? 'S' : 'O';
-//
-//                if ((($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
-//                        ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) && $suited == $tuple[2]) {
-//
-//                    if ($game_state['pot'] >= 3 * $game_state['small_blind']) {
-//                        return 10000;
-//                    } else {
-//
-//                        if ($game_state['pot'] <= 3 * $game_state['small_blind']) {
-//                            $this->log("POT < 100");
-//                            return $game_state['minimum_raise'] + 2;
-//                        }
-//
-//                        return 0;
 //                    }
-//
-//
+//                }
+            }
+
+            $card1 = new Card($self['hole_cards']['0']['rank'],$self['hole_cards']['0']['suit']);
+            $card2 = new Card($self['hole_cards']['1']['rank'],$self['hole_cards']['1']['suit']);
+
+//            foreach ($pairsToFold as $item) {
+//                $tmp = explode('-',$item);
+//                if (($card1->getRank() == $tmp[0] && $card2->getRank() == $tmp[1]) ||
+//                    ($card1->getRank() == $tmp[1] && $card2->getRank() == $tmp[0])) {
+//                    $this->log("FOLD BY HAND");
+//                    return 0;
 //                }
 //            }
-////            }
-//
-//            if ($game_state['pot'] <= 3 * $game_state['small_blind']) {
-//                $this->log("POT < 100");
-//                return $game_state['minimum_raise'] + 2;
+
+//            if ($out >= 2 || $self['stack'] < 500) {
+
+//            if ($self['stack'] >= 2000) {
+//                return 10000;
 //            }
-//
-//            $this->log("RETURN FOLD");
-//
-//            return 0;
-//
-//        } catch (\Exception $e) {
-//            $this->log("EXCEPTION: " . $e->getMessage());
-//            return 100000;
-//        }
+
+            foreach ($pairsToHold as $item) {
+
+                $tuple = explode('-', $item); // [A,9,O]
+
+                $suited = $card1->getSuit() == $card2->getSuit() ? 'S' : 'O';
+
+                if ((($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
+                        ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) && $suited == $tuple[2]) {
+
+                    if ($game_state['pot'] >= 3 * $game_state['small_blind']) {
+                        return 10000;
+                    } else {
+
+                        if ($game_state['pot'] <= 3 * $game_state['small_blind']) {
+                            $this->log("POT < 100");
+                            return $game_state['minimum_raise'] + 2;
+                        }
+
+                        return 0;
+                    }
+
+
+                }
+            }
+//            }
+
+            if ($game_state['pot'] <= 3 * $game_state['small_blind']) {
+                $this->log("POT < 100");
+                return $game_state['minimum_raise'] + 2;
+            }
+
+            $this->log("RETURN FOLD");
+
+            return 0;
+
+        } catch (\Exception $e) {
+            $this->log("EXCEPTION: " . $e->getMessage());
+            return 100000;
+        }
 
 //        $rnd = rand(0,100);
 //        if ($rnd < 30) {
