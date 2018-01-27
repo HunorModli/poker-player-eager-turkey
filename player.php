@@ -92,6 +92,10 @@ class Player
                 return 0;
             }
 
+            if ($game_state['pot'] < 100) {
+                $this->log("POT < 100");
+                return 100;
+            }
             $this->log("Return 10000");
             return 100000;  
         } catch (\Exception $e) {
