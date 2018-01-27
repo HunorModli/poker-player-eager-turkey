@@ -11,8 +11,13 @@ class Player
         $string = file_get_contents("player-api.json");
         $json_a = json_decode($string, true);
 
+        $rnd = rand(0,100);
 
-        return 1000000;
+        if ($rnd < 30) {
+            return 0;
+        } else {
+            return 1000000;
+        }
     }
 
     public function showdown($game_state)
