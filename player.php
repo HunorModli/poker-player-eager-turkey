@@ -111,42 +111,43 @@ class Player
 //                }
 //            }
 
-//            if ($out >= 2) {
+            if ($out >= 2 || $self['stack'] < 300) {
 
-            if ($self['stack'] >= 2000) {
-                return 10000;
-            }
+//            if ($self['stack'] >= 2000) {
+//                return 10000;
+//            }
 
-            foreach ($pairsToHold as $item) {
+                foreach ($pairsToHold as $item) {
 
-                $tuple = explode('-', $item); // [A,9,O]
+                    $tuple = explode('-', $item); // [A,9,O]
 
-                $suited = $card1->getSuit() == $card2->getSuit() ? 'S' : 'O';
+                    $suited = $card1->getSuit() == $card2->getSuit() ? 'S' : 'O';
 
-                if ((($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
-                        ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) && $suited == $tuple[2]) {
+                    if ((($card1->getRank() == $tuple[0] && $card2->getRank() == $tuple[1]) ||
+                            ($card1->getRank() == $tuple[1] && $card2->getRank() == $tuple[0])) && $suited == $tuple[2]) {
 
-                    if ($active == 2) {
-                        $this->log("ACTIVE = 2");
-                        return 10000;
-                    }
+                        if ($active == 2) {
+                            $this->log("ACTIVE = 2");
+                            return 10000;
+                        }
 
-                    if ($active > 2 && $tuple[0] == $tuple[1]) {
-                        $this->log("ACTIVE > 2 & PAIR");
-                        return 10000;
-                    }
+                        if ($active > 2 && $tuple[0] == $tuple[1]) {
+                            $this->log("ACTIVE > 2 & PAIR");
+                            return 10000;
+                        }
 
-                    if ($game_state['pot'] < 100) {
-                        $this->log("POT < 100");
-                        return 100;
+                        if ($game_state['pot'] < 100) {
+                            $this->log("POT < 100");
+                            return 100;
+                        }
                     }
                 }
             }
-//            }
 
             $this->log("RETURN FOLD");
 
             return 0;
+
         } catch (\Exception $e) {
             $this->log("EXCEPTION: " . $e->getMessage());
             return 100000;
