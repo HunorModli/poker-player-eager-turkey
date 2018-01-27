@@ -53,8 +53,11 @@ class Player
 {
     const VERSION = "Default PHP folding player";
 
+    private $gameState;
+
     public function betRequest($game_state)
     {
+        $this->gameState = $game_state;
         try {
             $filePairs = file_get_contents('fold.txt');
 
@@ -77,13 +80,14 @@ class Player
                 $tmp = explode('-',$item);
                 if (($card1->getRank() == $tmp[0] && $card2->getRank() == $tmp[1]) ||
                     ($card1->getRank() == $tmp[1] && $card2->getRank() == $tmp[0])) {
+                    $this->log("FOLD 0");
                     return 0;
                 }
             }
-
+            $this->log("Return 10000");
             return 100000;  
         } catch (\Exception $e) {
-
+            $this->log("EXCEPTION: " . $e->getMessage());
             return 100000;
         }
     }
@@ -91,5 +95,9 @@ class Player
     public function showdown($game_state)
     {
 
+    }
+
+    public function log($message) {
+        file_put_contents("php://stderr", '####THIS####  ' . $message);
     }
 }
